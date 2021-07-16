@@ -1,0 +1,32 @@
+//javac -cp "*" Airecondicionado.java
+//java -cp ".;*" Airecondicionado
+import net.sourceforge.jFuzzyLogic.FIS;
+
+public class Airecondicionado {
+    public static void main(String[] args) throws Exception {
+        // Load from 'FCL' file
+        final String dir = System.getProperty("user.dir");
+        String fileName = dir + "/Airecondicionado.fcl";
+
+        FIS fis = FIS.load(fileName,true);
+        // Error while loading?
+        if( fis == null ) {
+        	System.err.println("Can't load file: '" + fileName + "'");
+            return;
+        }
+
+        // Mostrar funciones de pertenecia
+        fis.chart();
+
+        // Definiendo valores discretos de temperatura y presion.
+        fis.setVariable("temperatura", 17);
+        fis.setVariable("presion", 76);
+
+        // Evaluando
+        fis.evaluate();
+
+        // Mostrar las salidas de la variable con su valor respectivo
+        fis.getVariable("apertura").chartDefuzzifier(true);
+
+    }
+}
